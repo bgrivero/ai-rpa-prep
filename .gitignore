@@ -2,3 +2,4 @@ venv
 datasets
 .ipynb_checkpoints
 .cache.sqlite
+*/__pycache__
