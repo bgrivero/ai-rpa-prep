@@ -3,3 +3,4 @@ datasets
 .ipynb_checkpoints
 .cache.sqlite
 */__pycache__
+*.env
