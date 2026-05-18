@@ -1,13 +1,11 @@
-from fastapi import FastAPI, Query, Path, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel, Field
 from typing import Annotated
-import time
-from contextlib import asynccontextmanager
-import pandas as pd
 from pathlib import Path as FilePath
 
 from etlscript import convert_GPS, ETL_weather, load_data, load_all_data
 from auth import router as auth_router, get_current_active_user, User
+
 # Temporary database creation with local dict. Will be changed later when integrated with sql.
 OUTPUT_DIR = FilePath(__file__).parent.parent / "datasets" / "weather-data"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -16,18 +14,8 @@ class TransformRequest(BaseModel):
     city: str
     days: Annotated[int, Field(ge=1, le=16)]
 
-def create_data():
-    time.sleep(2)
-    hourly_db = pd.read_csv(OUTPUT_DIR / "hourly.csv").to_dict()
-    daily_db = pd.read_csv(OUTPUT_DIR / "daily.csv").to_dict()
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    create_data()
-    yield
-
-app = FastAPI(lifespan=lifespan, 
-              title="Weather ETL App", 
+app = FastAPI(title="Weather ETL App", 
               description="Fetches and transforms weather data via Open-Meteo",
               version="1.0.0")
 

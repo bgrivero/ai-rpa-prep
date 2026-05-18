@@ -2,8 +2,6 @@ import openmeteo_requests
 
 import pandas as pd
 import requests_cache
-import time
-from datetime import datetime
 from retry_requests import retry
 from pathlib import Path
 
